@@ -1,0 +1,43 @@
+version: '3.5'
+
+services:
+  postgres:
+    container_name: postgres_container
+    image: postgres
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: 123
+      PGDATA: /data/postgres
+    volumes:
+       - postgres:/data/postgres
+    ports:
+      - "5432:5432"
+    networks:
+      default:
+        ipv4_address: 172.12.0.20
+    restart: unless-stopped
+  
+  pgadmin:
+    container_name: pgadmin_container
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: thangdao2701captain@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: 123
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+       - pgadmin:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+    networks:
+      default:
+        ipv4_address: 172.12.0.21
+    restart: unless-stopped
+
+networks:
+  default:
+    external:
+      name: hadoop-network
+
+volumes:
+    postgres:
+    pgadmin:
